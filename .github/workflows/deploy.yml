@@ -1,0 +1,45 @@
+name: Deploy to ECS (Fargate)
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_REPO: ${{ secrets.ECR_REPO }}
+  ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+  ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$ECR_REPO:$IMAGE_TAG .
+          docker push $REGISTRY/$ECR_REPO:$IMAGE_TAG
+          echo "image=$REGISTRY/$ECR_REPO:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Force new deployment (uses latest task definition image)
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment
