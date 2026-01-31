@@ -19,6 +19,12 @@ resource "aws_db_instance" "this" {
 
   db_name  = "appdb"
   username = "appuser"
-  password = var.db_password
+  password = random_password.db.result
 }
+resource "random_password" "db" {
+  length           = 24
+  special          = true
+  override_special = "!#$%&()*+,-.:;<=>?[]^_{|}~"
+}
+
 

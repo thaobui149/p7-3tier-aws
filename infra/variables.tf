@@ -37,7 +37,3 @@ variable "app_port" {
   type    = number
   default = 8080
 }
-variable "db_password" {
-  type      = string
-  sensitive = true
-}
