@@ -4,6 +4,10 @@ on:
   push:
     branches: [ "main" ]
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REPO: ${{ secrets.ECR_REPO }}
