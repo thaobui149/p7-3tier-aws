@@ -35,6 +35,10 @@ jobs:
       - name: Build, tag, and push image to ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
+          REPO: ${{ env.ECR_REPO }}
+          SHA_TAG: ${{ github.sha }}
         run: |
-          docker build -f python/dockerfile -t $REGISTRY/$ECR_REPO:$IMAGE_TAG python
+          docker build -f python/dockerfile -t $REGISTRY/$REPO:$SHA_TAG python
+          docker tag $REGISTRY/$REPO:$SHA_TAG $REGISTRY/$REPO:latest
+          docker push $REGISTRY/$REPO:$SHA_TAG
+          docker push $REGISTRY/$REPO:latest
