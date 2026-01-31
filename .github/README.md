@@ -28,3 +28,5 @@
 
 ## Cleanup
 - terraform destroy
+
+![Architecture Diagram](docs/architecture.png)
