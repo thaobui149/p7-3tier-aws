@@ -37,4 +37,4 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f python/dockerfile -t $REGISTRY/$ECR_REPO:$IMAGE_TAG pyth
+          docker build -f python/dockerfile -t $REGISTRY/$ECR_REPO:$IMAGE_TAG python
