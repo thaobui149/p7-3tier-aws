@@ -10,9 +10,9 @@
 ![Architecture Diagram](docs/architecture.png)
 
 ## Outputs
-- ALB DNS: http://p7-3tier-dev-alb-749288646.eu-central-1.elb.amazonaws.com
+- ALB DNS (when running): http://p7-3tier-dev-alb-749288646.eu-central-1.elb.amazonaws.com
 - ECR: 329771247218.dkr.ecr.eu-central-1.amazonaws.com/p7-3tier-dev-app
-- RDS endpoint: p7-3tier-dev-db.cxgkswya624y.eu-central-1.rds.amazonaws.com
+- RDS endpoint (private): p7-3tier-dev-db.cxgkswya624y.eu-central-1.rds.amazonaws.com
 - Log group: /ecs/p7-3tier-dev
 
 ## Endpoints
